@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACDS — Autonomous Cyber Defense System</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:        #0a0e1a;
+      --surface:   #0f1629;
+      --surface2:  #151d35;
+      --border:    #1e2d50;
+      --accent:    #00d4ff;
+      --red:       #ff3b5c;
+      --yellow:    #ffc107;
+      --green:     #00e676;
+      --text:      #c8d8f0;
+      --text-dim:  #5a7090;
+      --font-mono: 'Courier New', monospace;
+    }
+    html, body { height: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Top Bar ── */
+    .topbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .topbar-brand {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 1.1rem; font-weight: 700; letter-spacing: 1px;
+    }
+    .topbar-brand .badge {
+      background: var(--red); color: #fff;
+      font-size: 0.65rem; padding: 2px 8px; border-radius: 20px;
+      font-weight: 800; letter-spacing: 1.5px; animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; } 50% { opacity: 0.4; }
+    }
+    .topbar-right {
+      display: flex; align-items: center; gap: 20px;
+      font-size: 0.8rem; color: var(--text-dim);
+    }
+    .topbar-right a {
+      color: var(--accent); text-decoration: none;
+      padding: 6px 14px; border: 1px solid var(--accent);
+      border-radius: 4px; transition: background 0.2s;
+    }
+    .topbar-right a:hover { background: rgba(0,212,255,0.1); }
+    #clock { font-family: var(--font-mono); color: var(--accent); }
+
+    /* ── Layout ── */
+    .page { display: flex; flex: 1; }
+    .sidebar {
+      width: 200px; background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 24px 0; flex-shrink: 0;
+    }
+    .sidebar-label {
+      font-size: 0.65rem; letter-spacing: 2px; color: var(--text-dim);
+      padding: 0 20px 10px; text-transform: uppercase;
+    }
+    .sidebar a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 20px; color: var(--text-dim);
+      text-decoration: none; transition: all 0.15s;
+      font-size: 0.875rem; border-left: 3px solid transparent;
+    }
+    .sidebar a:hover, .sidebar a.active {
+      color: var(--accent); background: rgba(0,212,255,0.05);
+      border-left-color: var(--accent);
+    }
+    .main { flex: 1; padding: 24px; overflow-y: auto; }
+
+    /* ── Stat Cards ── */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px; margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 20px; position: relative; overflow: hidden;
+    }
+    .stat-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    }
+    .stat-card.red::before   { background: var(--red); }
+    .stat-card.blue::before  { background: var(--accent); }
+    .stat-card.green::before { background: var(--green); }
+    .stat-card.yellow::before{ background: var(--yellow); }
+    .stat-label { font-size: 0.7rem; letter-spacing: 1.5px; color: var(--text-dim);
+                  text-transform: uppercase; margin-bottom: 8px; }
+    .stat-value { font-size: 2rem; font-weight: 700; font-family: var(--font-mono);
+                  line-height: 1; }
+    .stat-card.red .stat-value   { color: var(--red); }
+    .stat-card.blue .stat-value  { color: var(--accent); }
+    .stat-card.green .stat-value { color: var(--green); }
+    .stat-card.yellow .stat-value{ color: var(--yellow); }
+    .stat-icon { position: absolute; right: 16px; top: 16px;
+                 font-size: 1.8rem; opacity: 0.15; }
+
+    /* ── Section Titles ── */
+    .section-title {
+      font-size: 0.7rem; letter-spacing: 2px; color: var(--text-dim);
+      text-transform: uppercase; margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-title::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    /* ── Grid Layout ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+    .grid-3 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 24px; }
+    @media (max-width: 900px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    /* ── Panel ── */
+    .panel {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 20px;
+    }
+    .panel-title {
+      font-size: 0.75rem; letter-spacing: 1px; color: var(--text-dim);
+      text-transform: uppercase; margin-bottom: 16px;
+      padding-bottom: 12px; border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    /* ── Tables ── */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    .data-table th {
+      text-align: left; padding: 8px 12px; color: var(--text-dim);
+      font-size: 0.68rem; letter-spacing: 1px; text-transform: uppercase;
+      border-bottom: 1px solid var(--border); font-weight: 500;
+    }
+    .data-table td {
+      padding: 9px 12px; border-bottom: 1px solid rgba(30,45,80,0.5);
+      font-family: var(--font-mono);
+    }
+    .data-table tr:hover td { background: rgba(0,212,255,0.03); }
+    .data-table tr:last-child td { border-bottom: none; }
+
+    /* ── Badges ── */
+    .badge-risk {
+      display: inline-block; padding: 2px 8px; border-radius: 3px;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 1px;
+    }
+    .risk-CRITICAL { background: rgba(255,59,92,0.2);  color: var(--red);    border: 1px solid var(--red); }
+    .risk-HIGH     { background: rgba(255,100,0,0.2);  color: #ff6400;       border: 1px solid #ff6400; }
+    .risk-MEDIUM   { background: rgba(255,193,7,0.2);  color: var(--yellow); border: 1px solid var(--yellow); }
+    .risk-LOW      { background: rgba(0,230,118,0.2);  color: var(--green);  border: 1px solid var(--green); }
+    .risk-MINIMAL  { background: rgba(90,112,144,0.2); color: var(--text-dim); border: 1px solid var(--text-dim); }
+
+    /* ── IP Chip ── */
+    .ip-chip {
+      color: var(--accent); background: rgba(0,212,255,0.08);
+      border: 1px solid rgba(0,212,255,0.2);
+      border-radius: 3px; padding: 1px 6px;
+    }
+
+    /* ── Event Type ── */
+    .event-type { font-size: 0.7rem; padding: 2px 6px; border-radius: 3px; }
+    .ev-login_attempt { background: rgba(255,59,92,0.15); color: var(--red); }
+    .ev-blocked       { background: rgba(255,0,0,0.2);    color: #ff4444; }
+    .ev-intel_check   { background: rgba(0,212,255,0.1);  color: var(--accent); }
+    .ev-path_probe    { background: rgba(255,193,7,0.15); color: var(--yellow); }
+    .ev-already_blocked { background: rgba(90,112,144,0.2); color: var(--text-dim); }
+
+    /* ── Chart ── */
+    .chart-wrap { position: relative; height: 200px; }
+
+    /* ── Score Bar ── */
+    .score-bar-wrap { display: flex; align-items: center; gap: 10px; }
+    .score-bar-bg {
+      flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden;
+    }
+    .score-bar-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+
+    /* ── Alert Banner ── */
+    .alert-banner {
+      background: rgba(255,59,92,0.1); border: 1px solid var(--red);
+      border-radius: 6px; padding: 10px 16px; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.85rem; color: var(--red);
+    }
+
+    /* ── Button ── */
+    .btn-unblock {
+      background: none; border: 1px solid var(--green); color: var(--green);
+      border-radius: 4px; padding: 3px 10px; cursor: pointer; font-size: 0.72rem;
+      font-family: var(--font-mono); transition: all 0.2s;
+    }
+    .btn-unblock:hover { background: rgba(0,230,118,0.1); }
+
+    /* ── Live indicator ── */
+    .live-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--green);
+      display: inline-block; animation: pulse 1.5s infinite;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Top Bar ── -->
+<div class="topbar">
+  <div class="topbar-brand">
+    <span>⚔️</span>
+    <span>ACDS</span>
+    <span class="badge">LIVE</span>
+    <span style="color:var(--text-dim);font-size:0.75rem;font-weight:400;">
+      Autonomous Cyber Defense System
+    </span>
+  </div>
+  <div class="topbar-right">
+    <span><span class="live-dot"></span> Monitoring Active</span>
+    <span id="clock">--:--:--</span>
+    <a href="/logs/">View All Logs</a>
+    <a href="/blocked/">Blocked IPs</a>
+  </div>
+</div>
+
+<div class="page">
+  <!-- ── Sidebar ── -->
+  <nav class="sidebar">
+    <div class="sidebar-label">Navigation</div>
+    <a href="/" class="active">📊 Dashboard</a>
+    <a href="/logs/">📋 Event Logs</a>
+    <a href="/blocked/">🚫 Blocked IPs</a>
+    <a href="/api/stats/">⚡ API: Stats</a>
+    <a href="/api/logs/">📡 API: Logs</a>
+    <div class="sidebar-label" style="margin-top:24px;">System</div>
+    <a href="/admin/">⚙️ Django Admin</a>
+  </nav>
+
+  <!-- ── Main Content ── -->
+  <main class="main">
+
+    {% if error %}
+    <div class="alert-banner">
+      ⚠ Database connection error: {{ error }}. Ensure MongoDB is running.
+    </div>
+    {% endif %}
+
+    <!-- ── Stat Cards ── -->
+    <div class="stat-grid">
+      <div class="stat-card red">
+        <div class="stat-icon">💥</div>
+        <div class="stat-label">Total Attacks</div>
+        <div class="stat-value">{{ stats.total_attacks|default:"0" }}</div>
+      </div>
+      <div class="stat-card red">
+        <div class="stat-icon">🚫</div>
+        <div class="stat-label">Blocked IPs</div>
+        <div class="stat-value">{{ stats.total_blocked|default:"0" }}</div>
+      </div>
+      <div class="stat-card blue">
+        <div class="stat-icon">👤</div>
+        <div class="stat-label">Unique Attackers</div>
+        <div class="stat-value">{{ stats.unique_attackers|default:"0" }}</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-icon">🛡</div>
+        <div class="stat-label">Defense Status</div>
+        <div class="stat-value" style="font-size:1.1rem;padding-top:6px;">ACTIVE</div>
+      </div>
+    </div>
+
+    <!-- ── Chart + Top Attackers ── -->
+    <div class="grid-3">
+      <div class="panel">
+        <div class="panel-title">
+          Attack Timeline (Hourly)
+          <span style="font-size:0.7rem;">Last 24 hours</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="attackChart"></canvas>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Top Attackers</div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>IP</th>
+              <th>Hits</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for atk in top_attackers %}
+            <tr>
+              <td><span class="ip-chip">{{ atk.ip }}</span></td>
+              <td>{{ atk.attempt_count }}</td>
+              <td>
+                <div class="score-bar-wrap">
+                  <span>{{ atk.risk_score|default:0 }}</span>
+                  <div class="score-bar-bg">
+                    <div class="score-bar-fill"
+                         style="width:{{ atk.risk_score|default:0 }}%;
+                                background:{% if atk.risk_score >= 80 %}var(--red){% elif atk.risk_score >= 50 %}var(--yellow){% else %}var(--green){% endif %}">
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3" style="color:var(--text-dim);text-align:center;padding:20px;">No attacker data yet</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── Recent Events + Blocked IPs ── -->
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">
+          Recent Events
+          <span style="font-size:0.7rem;">Latest {{ recent_logs|length }}</span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>IP</th>
+                <th>Event</th>
+                <th>Detail</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for log in recent_logs %}
+              <tr>
+                <td style="color:var(--text-dim);font-size:0.75rem;">
+                  {{ log.timestamp|truncatechars:19 }}
+                </td>
+                <td><span class="ip-chip">{{ log.ip }}</span></td>
+                <td>
+                  <span class="event-type ev-{{ log.event_type }}">
+                    {{ log.event_type|cut:"_" }}
+                  </span>
+                </td>
+                <td style="color:var(--text-dim);max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                  {% if log.details.username %}user={{ log.details.username }}{% endif %}
+                  {% if log.details.path %}path={{ log.details.path }}{% endif %}
+                </td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="4" style="color:var(--text-dim);text-align:center;padding:20px;">No events recorded yet</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">
+          Recently Blocked
+          <span style="font-size:0.7rem;">{{ blocked_ips|length }} shown</span>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>IP</th>
+              <th>Score</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for bip in blocked_ips %}
+            <tr>
+              <td>
+                <span class="ip-chip">{{ bip.ip }}</span>
+                {% if bip.country %}
+                <span style="color:var(--text-dim);font-size:0.7rem;">{{ bip.country }}</span>
+                {% endif %}
+              </td>
+              <td>
+                <span class="badge-risk risk-{% if bip.risk_score >= 80 %}CRITICAL{% elif bip.risk_score >= 60 %}HIGH{% elif bip.risk_score >= 40 %}MEDIUM{% else %}LOW{% endif %}">
+                  {{ bip.risk_score }}
+                </span>
+              </td>
+              <td>
+                <button class="btn-unblock" onclick="unblockIP('{{ bip.ip }}', this)">
+                  Unblock
+                </button>
+              </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3" style="color:var(--text-dim);text-align:center;padding:20px;">No IPs blocked yet</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ── Clock ──
+(function tick() {
+  document.getElementById('clock').textContent = new Date().toUTCString().slice(17,25) + ' UTC';
+  setTimeout(tick, 1000);
+})();
+
+// ── Attack Timeline Chart ──
+(function() {
+  const raw = {{ chart_data|safe }};
+  const labels = raw.map(d => d._id ? d._id.slice(11,16) : '');
+  const values = raw.map(d => d.count || 0);
+
+  const ctx = document.getElementById('attackChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels.length ? labels : ['No Data'],
+      datasets: [{
+        label: 'Attacks',
+        data: values.length ? values : [0],
+        borderColor: '#ff3b5c',
+        backgroundColor: 'rgba(255,59,92,0.08)',
+        borderWidth: 2,
+        pointRadius: 3,
+        pointBackgroundColor: '#ff3b5c',
+        fill: true,
+        tension: 0.4,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: {
+          grid: { color: 'rgba(30,45,80,0.8)' },
+          ticks: { color: '#5a7090', font: { size: 10 } }
+        },
+        y: {
+          grid: { color: 'rgba(30,45,80,0.8)' },
+          ticks: { color: '#5a7090', font: { size: 10 }, stepSize: 1 },
+          beginAtZero: true,
+        }
+      }
+    }
+  });
+})();
+
+// ── Unblock IP ──
+function unblockIP(ip, btn) {
+  if (!confirm('Remove firewall block for ' + ip + '?')) return;
+  btn.textContent = '...';
+  btn.disabled = true;
+  fetch('/api/unblock/' + encodeURIComponent(ip) + '/', { method: 'POST' })
+    .then(r => r.json())
+    .then(d => {
+      if (d.success) {
+        btn.closest('tr').style.opacity = '0.3';
+        btn.textContent = 'Done';
+      } else {
+        btn.textContent = 'Error';
+        btn.disabled = false;
+      }
+    })
+    .catch(() => { btn.textContent = 'Error'; btn.disabled = false; });
+}
+
+// ── Auto-refresh stats every 30s ──
+setInterval(() => {
+  fetch('/api/stats/')
+    .then(r => r.json())
+    .then(d => {
+      // Silently update stat cards if needed
+    })
+    .catch(() => {});
+}, 30000);
+</script>
+</body>
+</html>

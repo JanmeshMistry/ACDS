@@ -1,0 +1,222 @@
+2026-04-22 15:16:26 [INFO] honeypot.web - Web Honeypot starting on 0.0.0.0:5000
+2026-04-22 15:16:42 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-22 15:16:42 [WARNING] honeypot.web - LOGIN ATTEMPT | IP=127.0.0.1       user=sakfksa              pass=232kdkdas ua=Mozilla/5.0 (Windows NT 10.0; Win64; x64
+2026-04-22 15:16:42 [INFO] database.mongo - Connected to MongoDB at mongodb://localhost:27017/
+2026-04-22 15:16:42 [INFO] engine.decision - Evaluating 127.0.0.1 (event=login_attempt)
+2026-04-22 15:16:43 [INFO] engine.decision - Decision for 127.0.0.1: ALLOW | score=0 (MINIMAL)
+2026-04-22 15:17:46 [INFO] database.mongo - Connected to MongoDB at mongodb://localhost:27017/
+2026-04-22 15:18:36 [INFO] simulator - === Web brute-force: 15 attempts ===
+2026-04-22 15:18:38 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-22 15:18:38 [WARNING] honeypot.web - LOGIN ATTEMPT | IP=45.33.32.156    user=oracle               pass=admin ua=Hydra v9.4
+2026-04-22 15:18:38 [INFO] engine.decision - Evaluating 45.33.32.156 (event=login_attempt)
+2026-04-22 15:18:38 [INFO] simulator - [01] user=oracle          pass=admin        status=401 ip=45.33.32.156
+2026-04-22 15:18:38 [WARNING] intelligence.virustotal - No VirusTotal API key set - using mock data for 45.33.32.156
+2026-04-22 15:18:38 [WARNING] intelligence.otx - No OTX API key set - using mock data for 45.33.32.156
+2026-04-22 15:18:38 [ERROR] defense.firewall - iptables not found - are you on Linux?
+2026-04-22 15:18:39 [INFO] database.mongo - Saved blocked IP to DB: 45.33.32.156 (score=48)
+2026-04-22 15:18:39 [WARNING] engine.decision - BLOCKED 45.33.32.156 - VirusTotal score 88 >= 50 (score=48)
+2026-04-22 15:18:39 [INFO] engine.decision - Decision for 45.33.32.156: BLOCK | score=48 (MEDIUM)
+2026-04-22 15:18:41 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-22 15:18:41 [WARNING] honeypot.web - LOGIN ATTEMPT | IP=45.33.32.156    user=postgres             pass=admin ua=Hydra v9.4
+2026-04-22 15:18:41 [INFO] engine.decision - Evaluating 45.33.32.156 (event=login_attempt)
+2026-04-22 15:18:41 [INFO] simulator - [02] user=postgres        pass=admin        status=401 ip=45.33.32.156
+2026-04-22 15:18:41 [INFO] engine.decision - 45.33.32.156 is already blocked, skipping
+2026-04-22 15:18:43 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-22 15:18:43 [WARNING] honeypot.web - LOGIN ATTEMPT | IP=45.33.32.156    user=user                 pass=letmein ua=Hydra v9.4
+2026-04-22 15:18:43 [INFO] engine.decision - Evaluating 45.33.32.156 (event=login_attempt)
+2026-04-22 15:18:43 [INFO] simulator - [03] user=user            pass=letmein      status=401 ip=45.33.32.156
+2026-04-22 15:18:43 [INFO] engine.decision - 45.33.32.156 is already blocked, skipping
+2026-04-22 15:18:46 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-22 15:18:46 [WARNING] honeypot.web - LOGIN ATTEMPT | IP=45.33.32.156    user=user                 pass=pass ua=Hydra v9.4
+2026-04-22 15:18:46 [INFO] engine.decision - Evaluating 45.33.32.156 (event=login_attempt)
+2026-04-22 15:18:46 [INFO] simulator - [04] user=user            pass=pass         status=401 ip=45.33.32.156
+2026-04-22 15:18:46 [INFO] engine.decision - 45.33.32.156 is already blocked, skipping
+2026-04-22 15:18:48 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-22 15:18:48 [WARNING] honeypot.web - LOGIN ATTEMPT | IP=45.33.32.156    user=ubuntu               pass=letmein ua=Hydra v9.4
+2026-04-22 15:18:48 [INFO] engine.decision - Evaluating 45.33.32.156 (event=login_attempt)
+2026-04-22 15:18:48 [INFO] simulator - [05] user=ubuntu          pass=letmein      status=401 ip=45.33.32.156
+2026-04-22 15:18:48 [INFO] engine.decision - 45.33.32.156 is already blocked, skipping
+2026-04-22 15:18:51 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-22 15:18:51 [WARNING] honeypot.web - LOGIN ATTEMPT | IP=45.33.32.156    user=postgres             pass=123456 ua=Hydra v9.4
+2026-04-22 15:18:51 [INFO] engine.decision - Evaluating 45.33.32.156 (event=login_attempt)
+2026-04-22 15:18:51 [INFO] simulator - [06] user=postgres        pass=123456       status=401 ip=45.33.32.156
+2026-04-22 15:18:51 [INFO] engine.decision - 45.33.32.156 is already blocked, skipping
+2026-04-22 15:18:53 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-22 15:18:53 [WARNING] honeypot.web - LOGIN ATTEMPT | IP=45.33.32.156    user=deploy               pass=qwerty ua=Hydra v9.4
+2026-04-22 15:18:53 [INFO] engine.decision - Evaluating 45.33.32.156 (event=login_attempt)
+2026-04-22 15:18:53 [INFO] simulator - [07] user=deploy          pass=qwerty       status=401 ip=45.33.32.156
+2026-04-22 15:18:53 [INFO] engine.decision - 45.33.32.156 is already blocked, skipping
+2026-04-22 15:18:56 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-22 15:18:56 [WARNING] honeypot.web - LOGIN ATTEMPT | IP=45.33.32.156    user=ubuntu               pass=toor ua=Hydra v9.4
+2026-04-22 15:18:56 [INFO] engine.decision - Evaluating 45.33.32.156 (event=login_attempt)
+2026-04-22 15:18:56 [INFO] simulator - [08] user=ubuntu          pass=toor         status=401 ip=45.33.32.156
+2026-04-22 15:18:56 [INFO] engine.decision - 45.33.32.156 is already blocked, skipping
+2026-04-22 15:18:58 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-22 15:18:58 [WARNING] honeypot.web - LOGIN ATTEMPT | IP=45.33.32.156    user=administrator        pass=toor ua=Hydra v9.4
+2026-04-22 15:18:58 [INFO] engine.decision - Evaluating 45.33.32.156 (event=login_attempt)
+2026-04-22 15:18:58 [INFO] simulator - [09] user=administrator   pass=toor         status=401 ip=45.33.32.156
+2026-04-22 15:18:58 [INFO] engine.decision - 45.33.32.156 is already blocked, skipping
+2026-04-22 15:19:00 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-22 15:19:00 [WARNING] honeypot.web - LOGIN ATTEMPT | IP=45.33.32.156    user=test                 pass=123456 ua=Hydra v9.4
+2026-04-22 15:19:00 [INFO] engine.decision - Evaluating 45.33.32.156 (event=login_attempt)
+2026-04-22 15:19:00 [INFO] simulator - [10] user=test            pass=123456       status=401 ip=45.33.32.156
+2026-04-22 15:19:00 [INFO] engine.decision - 45.33.32.156 is already blocked, skipping
+2026-04-22 15:19:03 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-22 15:19:03 [WARNING] honeypot.web - LOGIN ATTEMPT | IP=45.33.32.156    user=ubuntu               pass=root ua=Hydra v9.4
+2026-04-22 15:19:03 [INFO] engine.decision - Evaluating 45.33.32.156 (event=login_attempt)
+2026-04-22 15:19:03 [INFO] simulator - [11] user=ubuntu          pass=root         status=401 ip=45.33.32.156
+2026-04-22 15:19:03 [INFO] engine.decision - 45.33.32.156 is already blocked, skipping
+2026-04-22 15:19:05 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-22 15:19:05 [WARNING] honeypot.web - LOGIN ATTEMPT | IP=45.33.32.156    user=ubuntu               pass=qwerty ua=Hydra v9.4
+2026-04-22 15:19:05 [INFO] engine.decision - Evaluating 45.33.32.156 (event=login_attempt)
+2026-04-22 15:19:05 [INFO] simulator - [12] user=ubuntu          pass=qwerty       status=401 ip=45.33.32.156
+2026-04-22 15:19:05 [INFO] engine.decision - 45.33.32.156 is already blocked, skipping
+2026-04-22 15:19:07 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-22 15:19:07 [WARNING] honeypot.web - LOGIN ATTEMPT | IP=45.33.32.156    user=ansible              pass=qwerty ua=Hydra v9.4
+2026-04-22 15:19:07 [INFO] engine.decision - Evaluating 45.33.32.156 (event=login_attempt)
+2026-04-22 15:19:07 [INFO] simulator - [13] user=ansible         pass=qwerty       status=401 ip=45.33.32.156
+2026-04-22 15:19:07 [INFO] engine.decision - 45.33.32.156 is already blocked, skipping
+2026-04-22 15:19:10 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-22 15:19:10 [WARNING] honeypot.web - LOGIN ATTEMPT | IP=45.33.32.156    user=root                 pass=12345678 ua=Hydra v9.4
+2026-04-22 15:19:10 [INFO] engine.decision - Evaluating 45.33.32.156 (event=login_attempt)
+2026-04-22 15:19:10 [INFO] simulator - [14] user=root            pass=12345678     status=401 ip=45.33.32.156
+2026-04-22 15:19:10 [INFO] engine.decision - 45.33.32.156 is already blocked, skipping
+2026-04-22 15:19:12 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-22 15:19:12 [WARNING] honeypot.web - LOGIN ATTEMPT | IP=45.33.32.156    user=root                 pass=password ua=Hydra v9.4
+2026-04-22 15:19:12 [INFO] engine.decision - Evaluating 45.33.32.156 (event=login_attempt)
+2026-04-22 15:19:12 [INFO] simulator - [15] user=root            pass=password     status=401 ip=45.33.32.156
+2026-04-22 15:19:12 [INFO] engine.decision - 45.33.32.156 is already blocked, skipping
+2026-04-22 15:19:13 [INFO] simulator - === Brute-force done ===
+
+2026-04-22 15:19:13 [INFO] simulator - === Path scanner ===
+2026-04-22 15:19:15 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-22 15:19:15 [INFO] engine.decision - Evaluating 198.20.69.74 (event=path_probe)
+2026-04-22 15:19:15 [INFO] honeypot.web - Path probe from 198.20.69.74 on /admin
+2026-04-22 15:19:15 [WARNING] intelligence.virustotal - No VirusTotal API key set - using mock data for 198.20.69.74
+2026-04-22 15:19:15 [WARNING] intelligence.otx - No OTX API key set - using mock data for 198.20.69.74
+2026-04-22 15:19:15 [INFO] simulator - SCAN /admin                         status=200 ip=198.20.69.74
+2026-04-22 15:19:15 [ERROR] defense.firewall - iptables not found - are you on Linux?
+2026-04-22 15:19:15 [INFO] database.mongo - Saved blocked IP to DB: 198.20.69.74 (score=39)
+2026-04-22 15:19:15 [WARNING] engine.decision - BLOCKED 198.20.69.74 - VirusTotal score 90 >= 50 (score=39)
+2026-04-22 15:19:15 [INFO] engine.decision - Decision for 198.20.69.74: BLOCK | score=39 (LOW)
+2026-04-22 15:19:17 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-22 15:19:17 [INFO] honeypot.web - Path probe from 198.20.69.74 on /wp-admin
+2026-04-22 15:19:17 [INFO] engine.decision - Evaluating 198.20.69.74 (event=path_probe)
+2026-04-22 15:19:17 [INFO] engine.decision - 198.20.69.74 is already blocked, skipping
+2026-04-22 15:19:17 [INFO] simulator - SCAN /wp-admin                      status=200 ip=198.20.69.74
+2026-04-22 15:19:19 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-22 15:19:19 [INFO] engine.decision - Evaluating 198.20.69.74 (event=path_probe)
+2026-04-22 15:19:19 [INFO] honeypot.web - Path probe from 198.20.69.74 on /phpmyadmin
+2026-04-22 15:19:19 [INFO] engine.decision - 198.20.69.74 is already blocked, skipping
+2026-04-22 15:19:19 [INFO] simulator - SCAN /phpmyadmin                    status=200 ip=198.20.69.74
+2026-04-22 15:19:21 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-22 15:19:21 [INFO] engine.decision - Evaluating 198.20.69.74 (event=path_probe)
+2026-04-22 15:19:21 [INFO] honeypot.web - Path probe from 198.20.69.74 on /.env
+2026-04-22 15:19:21 [INFO] engine.decision - 198.20.69.74 is already blocked, skipping
+2026-04-22 15:19:21 [INFO] simulator - SCAN /.env                          status=200 ip=198.20.69.74
+2026-04-22 15:19:24 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-22 15:19:24 [INFO] honeypot.web - Path probe from 198.20.69.74 on /config
+2026-04-22 15:19:24 [INFO] engine.decision - Evaluating 198.20.69.74 (event=path_probe)
+2026-04-22 15:19:24 [INFO] engine.decision - 198.20.69.74 is already blocked, skipping
+2026-04-22 15:19:24 [INFO] simulator - SCAN /config                        status=200 ip=198.20.69.74
+2026-04-22 15:19:26 [INFO] simulator - SCAN /backup                        status=404 ip=198.20.69.74
+2026-04-22 15:19:28 [INFO] simulator - SCAN /.git/config                   status=404 ip=198.20.69.74
+2026-04-22 15:19:30 [INFO] simulator - SCAN /api/v1/users                  status=404 ip=198.20.69.74
+2026-04-22 15:19:33 [INFO] simulator - SCAN /shell.php                     status=404 ip=198.20.69.74
+2026-04-22 15:19:35 [INFO] simulator - SCAN /xmlrpc.php                    status=404 ip=198.20.69.74
+2026-04-22 15:19:37 [INFO] simulator - SCAN /wp-login.php                  status=404 ip=198.20.69.74
+2026-04-22 15:19:39 [INFO] simulator - SCAN /.htpasswd                     status=404 ip=198.20.69.74
+2026-04-22 15:19:40 [INFO] simulator - === Path scan done ===
+
+2026-04-22 15:26:42 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-22 15:26:42 [WARNING] honeypot.web - LOGIN ATTEMPT | IP=127.0.0.1       user=admin                pass=admin123 ua=Mozilla/5.0 (Windows NT 10.0; Win64; x64
+2026-04-22 15:26:42 [INFO] engine.decision - Evaluating 127.0.0.1 (event=login_attempt)
+2026-04-22 15:26:42 [INFO] engine.decision - Decision for 127.0.0.1: ALLOW | score=0 (MINIMAL)
+2026-04-22 15:27:43 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-22 15:27:43 [WARNING] honeypot.web - LOGIN ATTEMPT | IP=127.0.0.1       user=nigaaaa              pass=wqwq ua=Mozilla/5.0 (Windows NT 10.0; Win64; x64
+2026-04-22 15:27:43 [INFO] engine.decision - Evaluating 127.0.0.1 (event=login_attempt)
+2026-04-22 15:27:43 [INFO] engine.decision - Decision for 127.0.0.1: ALLOW | score=0 (MINIMAL)
+2026-04-23 22:15:35 [INFO] main - Connecting to MongoDB...
+2026-04-23 22:15:37 [INFO] database.mongo - Connected to MongoDB at mongodb://localhost:27017/
+2026-04-23 22:15:37 [INFO] database.mongo - MongoDB indexes ready
+2026-04-23 22:15:37 [INFO] main - MongoDB ready
+2026-04-23 22:15:37 [INFO] main - Starting web honeypot on port 5000
+2026-04-23 22:15:37 [INFO] main - Started: Web Honeypot
+2026-04-23 22:15:37 [INFO] main - Starting dashboard on port 8000
+2026-04-23 22:15:37 [INFO] main - Started: Dashboard
+2026-04-23 22:15:37 [INFO] honeypot.web - Web Honeypot starting on 0.0.0.0:5000
+2026-04-23 22:15:38 [INFO] main - 
+2026-04-23 22:15:38 [INFO] main -   ACDS is running. Ctrl+C to stop.
+2026-04-23 22:15:38 [INFO] main -   Web Honeypot -> http://localhost:5000
+2026-04-23 22:15:38 [INFO] main -   SSH Honeypot -> ssh root@localhost -p 2222
+2026-04-23 22:15:38 [INFO] main -   Dashboard    -> http://localhost:8000
+2026-04-23 22:15:38 [INFO] main - 
+2026-04-23 22:17:36 [INFO] database.mongo - Connected to MongoDB at mongodb://localhost:27017/
+2026-04-23 23:27:10 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-23 23:27:10 [WARNING] honeypot.web - LOGIN ATTEMPT | IP=192.168.1.14    user=SPIDY                pass=WAFWAF ua=Mozilla/5.0 (Windows NT 10.0; Win64; x64
+2026-04-23 23:27:10 [INFO] engine.decision - Evaluating 192.168.1.14 (event=login_attempt)
+2026-04-23 23:27:10 [INFO] engine.decision - Decision for 192.168.1.14: ALLOW | score=0 (MINIMAL)
+2026-04-24 00:52:57 [INFO] main - Shutting down ACDS...
+2026-04-24 15:47:23 [INFO] main - Connecting to MongoDB...
+2026-04-24 15:47:24 [INFO] database.mongo - Connected to MongoDB at mongodb://localhost:27017/
+2026-04-24 15:47:24 [INFO] database.mongo - MongoDB indexes ready
+2026-04-24 15:47:24 [INFO] main - MongoDB ready
+2026-04-24 15:47:24 [INFO] main - Starting web honeypot on port 5000
+2026-04-24 15:47:24 [INFO] main - Started: Web Honeypot
+2026-04-24 15:47:24 [INFO] honeypot.web - Web Honeypot starting on 0.0.0.0:5000
+2026-04-24 15:47:24 [INFO] main - Starting dashboard on port 8000
+2026-04-24 15:47:24 [INFO] main - Started: Dashboard
+2026-04-24 15:47:25 [INFO] main - 
+2026-04-24 15:47:25 [INFO] main -   ACDS is running. Ctrl+C to stop.
+2026-04-24 15:47:25 [INFO] main -   Web Honeypot -> http://localhost:5000
+2026-04-24 15:47:25 [INFO] main -   SSH Honeypot -> ssh root@localhost -p 2222
+2026-04-24 15:47:25 [INFO] main -   Dashboard    -> http://localhost:8000
+2026-04-24 15:47:25 [INFO] main - 
+2026-04-24 15:47:47 [INFO] database.mongo - Connected to MongoDB at mongodb://localhost:27017/
+2026-04-24 15:48:41 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-24 15:48:41 [WARNING] honeypot.web - LOGIN ATTEMPT | IP=127.0.0.1       user=hiya g0andu          pass=anfdjnfjnaf ua=Mozilla/5.0 (Windows NT 10.0; Win64; x64
+2026-04-24 15:48:41 [INFO] engine.decision - Evaluating 127.0.0.1 (event=login_attempt)
+2026-04-24 15:48:41 [INFO] engine.decision - Decision for 127.0.0.1: ALLOW | score=0 (MINIMAL)
+2026-04-24 15:52:35 [INFO] main - Shutting down ACDS...
+2026-04-24 15:52:42 [INFO] main - Connecting to MongoDB...
+2026-04-24 15:52:42 [INFO] database.mongo - Connected to MongoDB at mongodb://localhost:27017/
+2026-04-24 15:52:42 [INFO] database.mongo - MongoDB indexes ready
+2026-04-24 15:52:42 [INFO] main - MongoDB ready
+2026-04-24 15:52:42 [INFO] main - Starting web honeypot on port 5000
+2026-04-24 15:52:42 [INFO] main - Started: Web Honeypot
+2026-04-24 15:52:42 [INFO] honeypot.web - Web Honeypot starting on 0.0.0.0:5000
+2026-04-24 15:52:43 [INFO] main - Starting dashboard on port 8000
+2026-04-24 15:52:43 [INFO] main - Started: Dashboard
+2026-04-24 15:52:43 [INFO] main - 
+2026-04-24 15:52:43 [INFO] main -   ACDS is running. Ctrl+C to stop.
+2026-04-24 15:52:43 [INFO] main -   Web Honeypot -> http://localhost:5000
+2026-04-24 15:52:43 [INFO] main -   SSH Honeypot -> ssh root@localhost -p 2222
+2026-04-24 15:52:43 [INFO] main -   Dashboard    -> http://localhost:8000
+2026-04-24 15:52:43 [INFO] main - 
+2026-04-24 15:52:49 [INFO] database.mongo - Connected to MongoDB at mongodb://localhost:27017/
+2026-04-24 15:52:57 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-04-24 15:52:57 [WARNING] honeypot.web - LOGIN ATTEMPT | IP=127.0.0.1       user=hiya g0andu          pass=anfdjnfjnaf ua=Mozilla/5.0 (Windows NT 10.0; Win64; x64
+2026-04-24 15:52:57 [INFO] engine.decision - Evaluating 127.0.0.1 (event=login_attempt)
+2026-04-24 15:52:57 [INFO] engine.decision - Decision for 127.0.0.1: ALLOW | score=1 (MINIMAL)
+2026-05-27 12:48:37 [INFO] main - Connecting to MongoDB...
+2026-05-27 12:48:39 [INFO] database.mongo - Connected to MongoDB at mongodb://localhost:27017/
+2026-05-27 12:48:39 [INFO] database.mongo - MongoDB indexes ready
+2026-05-27 12:48:39 [INFO] main - MongoDB ready
+2026-05-27 12:48:39 [INFO] main - Starting web honeypot on port 5000
+2026-05-27 12:48:39 [INFO] main - Started: Web Honeypot
+2026-05-27 12:48:40 [INFO] main - Starting dashboard on port 8000
+2026-05-27 12:48:40 [INFO] main - Started: Dashboard
+2026-05-27 12:48:40 [INFO] honeypot.web - Web Honeypot starting on 0.0.0.0:5000
+2026-05-27 12:48:40 [INFO] main - 
+2026-05-27 12:48:40 [INFO] main -   ACDS is running. Ctrl+C to stop.
+2026-05-27 12:48:40 [INFO] main -   Web Honeypot -> http://localhost:5000
+2026-05-27 12:48:40 [INFO] main -   SSH Honeypot -> ssh root@localhost -p 2222
+2026-05-27 12:48:40 [INFO] main -   Dashboard    -> http://localhost:8000
+2026-05-27 12:48:40 [INFO] main - 
+2026-05-27 12:53:30 [INFO] database.mongo - Connected to MongoDB at mongodb://localhost:27017/
+2026-05-27 13:03:02 [ERROR] defense.firewall - Error unblocking 198.20.69.74: [WinError 2] The system cannot find the file specified
+2026-05-27 13:09:56 [WARNING] utils.geoip - GeoIP database not found at data/GeoLite2-City.mmdb. Download GeoLite2-City.mmdb from maxmind.com and put it in the data/ folder.
+2026-05-27 13:09:56 [WARNING] honeypot.web - LOGIN ATTEMPT | IP=127.0.0.1       user=random               pass=asjhfeef ua=Mozilla/5.0 (Windows NT 10.0; Win64; x64
+2026-05-27 13:09:56 [INFO] engine.decision - Evaluating 127.0.0.1 (event=login_attempt)
+2026-05-27 13:09:56 [INFO] engine.decision - Decision for 127.0.0.1: ALLOW | score=1 (MINIMAL)
+2026-05-27 13:10:05 [ERROR] defense.firewall - Error unblocking 222.186.42.11: [WinError 2] The system cannot find the file specified

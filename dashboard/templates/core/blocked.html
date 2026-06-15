@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ACDS — Blocked IPs</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:#0a0e1a; --surface:#0f1629; --border:#1e2d50;
+      --accent:#00d4ff; --red:#ff3b5c; --green:#00e676;
+      --yellow:#ffc107; --text:#c8d8f0; --text-dim:#5a7090;
+      --font-mono:'Courier New',monospace;
+    }
+    body { background:var(--bg); color:var(--text); font-family:'Segoe UI',sans-serif; font-size:14px; }
+    .topbar {
+      background:var(--surface); border-bottom:1px solid var(--border);
+      padding:0 24px; height:56px; display:flex; align-items:center;
+      justify-content:space-between;
+    }
+    .brand { font-weight:700; letter-spacing:1px; }
+    .topbar a { color:var(--accent); text-decoration:none; margin-left:20px; font-size:0.85rem; }
+    .main { padding:32px 40px; max-width:1200px; margin:0 auto; }
+    h1 { font-size:1.2rem; margin-bottom:6px; }
+    .sub { color:var(--text-dim); font-size:0.85rem; margin-bottom:28px; }
+    .panel { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:24px; }
+    .panel-header {
+      display:flex; justify-content:space-between; align-items:center;
+      margin-bottom:20px; padding-bottom:14px; border-bottom:1px solid var(--border);
+    }
+    .panel-title { font-size:0.75rem; letter-spacing:1px; color:var(--text-dim); text-transform:uppercase; }
+    table { width:100%; border-collapse:collapse; font-size:0.83rem; }
+    th { text-align:left; padding:10px 14px; color:var(--text-dim); font-size:0.68rem;
+         letter-spacing:1px; text-transform:uppercase; border-bottom:1px solid var(--border); }
+    td { padding:10px 14px; border-bottom:1px solid rgba(30,45,80,0.5); font-family:var(--font-mono); }
+    tr:hover td { background:rgba(0,212,255,0.03); }
+    tr:last-child td { border-bottom:none; }
+    .ip-chip { color:var(--accent); background:rgba(0,212,255,0.08);
+               border:1px solid rgba(0,212,255,0.2); border-radius:3px; padding:2px 8px; }
+    .score { display:inline-block; padding:3px 10px; border-radius:3px; font-size:0.72rem;
+             font-weight:700; }
+    .s-critical { background:rgba(255,59,92,0.2); color:var(--red); border:1px solid var(--red); }
+    .s-high     { background:rgba(255,100,0,0.2); color:#ff6400;    border:1px solid #ff6400; }
+    .s-medium   { background:rgba(255,193,7,0.2); color:var(--yellow); border:1px solid var(--yellow); }
+    .s-low      { background:rgba(0,230,118,0.2); color:var(--green); border:1px solid var(--green); }
+    .btn-unblock {
+      background:none; border:1px solid var(--green); color:var(--green);
+      border-radius:4px; padding:4px 12px; cursor:pointer; font-size:0.72rem;
+      font-family:var(--font-mono); transition:all 0.2s;
+    }
+    .btn-unblock:hover { background:rgba(0,230,118,0.1); }
+    .empty { text-align:center; padding:40px; color:var(--text-dim); }
+    .search-bar {
+      background:var(--bg); border:1px solid var(--border); border-radius:6px;
+      padding:8px 14px; color:var(--text); font-size:0.85rem; width:260px;
+    }
+    .search-bar::placeholder { color:var(--text-dim); }
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <span class="brand">⚔️ ACDS</span>
+  <div>
+    <a href="/">← Dashboard</a>
+    <a href="/logs/">Event Logs</a>
+  </div>
+</div>
+
+<div class="main">
+  <h1>🚫 Blocked IP Addresses</h1>
+  <p class="sub">{{ blocked_ips|length }} IP address(es) currently blocked via iptables</p>
+
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-title">Firewall Blocklist</span>
+      <input class="search-bar" type="text" id="searchInput" placeholder="Filter by IP or country…" onkeyup="filterTable()">
+    </div>
+
+    <table id="blockTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>IP Address</th>
+          <th>Risk Score</th>
+          <th>Reason</th>
+          <th>Blocked At (UTC)</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for bip in blocked_ips %}
+        <tr>
+          <td style="color:var(--text-dim);">{{ forloop.counter }}</td>
+          <td><span class="ip-chip">{{ bip.ip }}</span></td>
+          <td>
+            <span class="score
+              {% if bip.risk_score >= 80 %}s-critical
+              {% elif bip.risk_score >= 60 %}s-high
+              {% elif bip.risk_score >= 40 %}s-medium
+              {% else %}s-low{% endif %}">
+              {{ bip.risk_score }}/100
+            </span>
+          </td>
+          <td style="color:var(--text-dim);max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+            {{ bip.reason|default:"—" }}
+          </td>
+          <td>{{ bip.blocked_at|truncatechars:19 }}</td>
+          <td>
+            <button class="btn-unblock" onclick="unblockIP('{{ bip.ip }}', this)">Unblock</button>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="empty">✅ No IPs are currently blocked.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+function filterTable() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('#blockTable tbody tr').forEach(tr => {
+    tr.style.display = tr.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+function unblockIP(ip, btn) {
+  if (!confirm('Remove firewall block for ' + ip + '?')) return;
+  btn.textContent = '…'; btn.disabled = true;
+  fetch('/api/unblock/' + encodeURIComponent(ip) + '/', { method: 'POST' })
+    .then(r => r.json())
+    .then(d => {
+      if (d.success) { btn.closest('tr').style.opacity = '0.3'; btn.textContent = 'Removed'; }
+      else { btn.textContent = 'Error'; btn.disabled = false; }
+    }).catch(() => { btn.textContent = 'Error'; btn.disabled = false; });
+}
+</script>
+</body>
+</html>
